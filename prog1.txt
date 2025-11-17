@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+ 
+struct Symbol {
+   char name[20];
+   char type[10];
+   int size;
+   int line_no;
+} table[100];
+ 
+int n = 0;
+ 
+void insert(char name[], char type[], int size, int line_no) {
+   for (int i = 0; i < n; i++) {
+       if (strcmp(table[i].name, name) == 0) {
+           printf("Duplicate entry: %s\n", name);
+           return;
+       }
+   }
+   strcpy(table[n].name, name);
+   strcpy(table[n].type, type);
+   table[n].size = size;
+   table[n].line_no = line_no;
+   n++;
+}
+ 
+void display() {
+   printf("\n%-10s %-10s %-5s %-8s\n", "Name", "Type", "Size", "LineNo");
+   for (int i = 0; i < n; i++) {
+       printf("%-10s %-10s %-5d %-8d\n", table[i].name, table[i].type, table[i].size, table[i].line_no);
+   }
+}
+ 
+int main() {
+   insert("a", "int", 4, 1);
+   insert("b", "float", 8, 2);
+   insert("a", "int", 4, 3); // duplicate
+   display();
+   return 0;
+}
+ 
