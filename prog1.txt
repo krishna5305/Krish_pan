@@ -1,42 +1,104 @@
 #include <stdio.h>
+
 #include <stdlib.h>
-#include <string.h>
+
  
-struct Symbol {
-   char name[20];
-   char type[10];
-   int size;
-   int line_no;
-} table[100];
+
+#define STACK_SIZE 100
+
  
-int n = 0;
+
+int stack[STACK_SIZE];
+
+int top = -1;
+
  
-void insert(char name[], char type[], int size, int line_no) {
-   for (int i = 0; i < n; i++) {
-       if (strcmp(table[i].name, name) == 0) {
-           printf("Duplicate entry: %s\n", name);
-           return;
-       }
+
+// Push value (allocate memory)
+
+void push(int value) {
+
+   if (top == STACK_SIZE - 1) {
+
+       printf("Stack Overflow! Cannot allocate more memory.\n");
+
+       return;
+
    }
-   strcpy(table[n].name, name);
-   strcpy(table[n].type, type);
-   table[n].size = size;
-   table[n].line_no = line_no;
-   n++;
+
+   stack[++top] = value;
+
+   printf("Allocated variable with value: %d (at address %d)\n", value, top);
+
 }
+
  
+
+// Pop value (deallocate memory)
+
+void pop() {
+
+   if (top == -1) {
+
+       printf("Stack Underflow! No memory to deallocate.\n");
+
+       return;
+
+   }
+
+   printf("Deallocated variable with value: %d (from address %d)\n", stack[top], top);
+
+   top--;
+
+}
+
+ 
+
+// Display stack content
+
 void display() {
-   printf("\n%-10s %-10s %-5s %-8s\n", "Name", "Type", "Size", "LineNo");
-   for (int i = 0; i < n; i++) {
-       printf("%-10s %-10s %-5d %-8d\n", table[i].name, table[i].type, table[i].size, table[i].line_no);
+
+   if (top == -1) {
+
+       printf("Stack is empty.\n");
+
+       return;
+
    }
+
+   printf("Current Stack (top to bottom):\n");
+
+   for (int i = top; i >= 0; i--)
+
+       printf("| %d |\n", stack[i]);
+
+   printf("-----\n");
+
 }
+
  
+
 int main() {
-   insert("a", "int", 4, 1);
-   insert("b", "float", 8, 2);
-   insert("a", "int", 4, 3); // duplicate
+
+   printf("=== Stack Allocation Simulation ===\n");
+
+   push(10);
+
+   push(20);
+
+   push(30);
+
    display();
-   return 0;
-}
+
  
+
+   pop();
+
+   display();
+
+ 
+
+   return 0;
+
+}
+
